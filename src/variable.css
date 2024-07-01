@@ -1,0 +1,11 @@
+:root {
+  --background-color: #111214;
+  --background-pattern-color: #1d1e22;
+  --text-color: #e7e9ea;
+  --element-background: #1a1b1f;
+  --primary-color: #007bff; /* Example primary color */
+  --primary-color-dark: #0062cc; /* Darker shade for hover */
+  --border-color: #343a40; 
+  --hover-color: #212529; 
+  --disabled-color: #484d53;
+}
