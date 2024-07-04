@@ -8,14 +8,22 @@
   let showOptions = true;
   let dragActive = false;
   let viewMode = 'fit';
+  let uploadError = false;
 
   const handleImageUpload = (event) => {
     imageFile = event.target.files[0];
+    uploadError = false;
     compressImage();
   };
 
   const compressImage = () => {
     if (!imageFile) return;
+
+    const supportedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/avif'];
+    if (!supportedTypes.includes(imageFile.type)) {
+      uploadError = true;
+      return;
+    }
 
     new Compressor(imageFile, {
       quality: compressionQuality,
@@ -45,25 +53,26 @@
     document.body.removeChild(downloadLink);
   };
 
-  let dragCounter = 0; // Counter to track drag enter/leave events
+  let dragCounter = 0;
 
   const handleDragEnter = (e) => {
     e.preventDefault();
-    dragCounter++; 
-    dragActive = true; 
+    dragCounter++;
+    dragActive = true;
   };
 
   const handleDragLeave = (e) => {
     e.preventDefault();
     dragCounter--;
-    if (dragCounter === 0) { 
-      dragActive = false; 
+    if (dragCounter === 0) {
+      dragActive = false;
     }
   };
 
   const handleDrop = (e) => {
     e.preventDefault();
     dragActive = false;
+    uploadError = false; 
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       imageFile = e.dataTransfer.files[0];
       compressImage();
@@ -131,15 +140,22 @@
     aria-label="Drag and drop image upload area"
   >
     {#if compressedImage}
-      <img src={compressedImage} alt="Komprimert bilde" class={viewMode} />
+      <!-- svelte-ignore a11y-img-redundant-alt -->
+      <img src={compressedImage} alt="Compressed image" class={viewMode} />
     {:else}
       <div class="placeholder">
         <svg class="icon"><use xlink:href="#icon-upload" /></svg>
-        <p>
-          Drag and drop an image, or
+        {#if uploadError}
+          <p class="error-message">Unsupported file format. Please upload a JPG, PNG, GIF, WEBP or AVIF image.</p>
           <input type="file" accept="image/*" on:change={handleImageUpload} id="file-input" />
-          <label for="file-input" class="file-input-label">choose and image</label>
-        </p>
+          <label for="file-input" class="file-input-label">choose an image</label>
+        {:else}
+          <p>
+            Drag and drop an image, or
+            <input type="file" accept="image/*" on:change={handleImageUpload} id="file-input" />
+            <label for="file-input" class="file-input-label">choose an image</label>
+          </p>
+        {/if}
       </div>
     {/if}
   </section>
@@ -352,6 +368,12 @@
   /* Utility Classes */
   .hidden {
     display: none;
+  }
+
+  .error-message {
+    color: var(--error-color, rgb(175, 24, 24)); 
+    font-size: 0.9rem;
+    margin-top: 8px;
   }
 
   @media screen and (max-width: 875px) {
