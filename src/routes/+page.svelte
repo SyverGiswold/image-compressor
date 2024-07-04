@@ -217,7 +217,7 @@
 
   /* Image Preview */
   .image-preview {
-    flex: 1;
+    width: 100%;
     display: grid;
     place-content: center;
     margin-right: 344px;
@@ -255,6 +255,7 @@
     max-height: calc(100vh - 56px);
     object-fit: contain;
     border-radius: 8px;
+    margin: auto;
   }
 
   img.actual {
@@ -351,5 +352,33 @@
   /* Utility Classes */
   .hidden {
     display: none;
+  }
+
+  @media screen and (max-width: 875px) {
+    .sidebar {
+    width: 100%;
+    right: 0;
+    top: unset;
+    transform: translateY(100%);
+  }
+
+  .sidebar.active {
+    transform: translateY(0);
+  }
+
+  .toggle-btn {
+    top: -64px;
+    left: unset;
+    right: 0;
+  }
+
+  .image-preview {
+    margin-right: unset;
+  }
+
+  img {
+    max-height: calc(100vh - 48px);
+    max-width: calc(100% - 48px);
+  }
   }
 </style>
