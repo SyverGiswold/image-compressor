@@ -177,6 +177,15 @@
     background-size: 40px 40px;
   }
 
+  .sidebar, button, input {
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  button {
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+  }
+
   /* Container */
   .container {
     display: flex;
@@ -188,14 +197,13 @@
   .sidebar {
     width: 280px;
     background-color: var(--element-background);
-    padding: 2rem;
+    padding: 108px 2rem;
     position: fixed;
     right: 0;
     top: 0;
     bottom: 0;
     transform: translateX(100%);
     transition: transform 0.3s ease-in-out;
-    box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.1);
     z-index: 10;
     display: flex;
     flex-direction: column;
@@ -208,18 +216,14 @@
 
   .toggle-btn {
     position: absolute;
-    top: 0;
-    left: -64px;
-    background: none;
-    border: none;
-    cursor: pointer;
+    top: 2rem;
+    left: 2rem;
     padding: 8px;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.2s;
-    color: var(--text-color);
+    transition: background-color 0.2s ease, top 0.3s ease-in-out, left 0.3s ease-in-out;
+  }
+
+  .sidebar:not(.active) .toggle-btn {
+    left: calc(-64px - 2rem);
   }
 
   .toggle-btn:hover {
@@ -239,8 +243,12 @@
     margin-right: 344px;
     padding: 24px;
     border-radius: 8px;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease, margin 0.3s ease-in-out;
     border: 4px dashed transparent;
+  }
+
+  .sidebar:not(.active) ~ .image-preview {
+    margin-right: 0;
   }
 
   .image-preview.drag-active {
@@ -251,7 +259,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: var(--text-color);
   }
 
   .placeholder .icon {
@@ -262,7 +269,6 @@
 
   .placeholder .file-input-label {
     color: var(--primary-color);
-    cursor: pointer;
     text-decoration: underline;
   }
 
@@ -293,33 +299,14 @@
     max-height: unset;
   }
 
-  /* Controls */
-  .controls {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: var(--element-background);
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.05);
-    z-index: 10;
-  }
-
   /* Buttons */
   button {
     padding: 0.5rem 1rem;
-    background-color: transparent;
     color: var(--text-color);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
+    background-color: var(--element-background);
     cursor: pointer;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+    transition: background-color 0.2s ease, border-color 0.3s ease;
     display: flex;
-    align-items: center;
-    gap: 12px;
   }
 
   button:hover {
@@ -333,8 +320,6 @@
 
   button:disabled {
     background-color: var(--disabled-color);
-    border-color: var(--disabled-color);
-    color: var(--text-color);
     cursor: not-allowed;
   }
 
@@ -342,18 +327,12 @@
     font-size: 1rem;
     padding: 0.75rem 1.5rem;
     background-color: var(--primary-color);
-    color: white;
     border: none;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.2s ease;
   }
 
   .download-btn:hover {
     background-color: var(--primary-color-dark);
-  }
-
-  .icon {
-    height: 24px;
-    width: 24px;
   }
 
   .icon use {
@@ -363,6 +342,10 @@
   /* File Input */
   input[type='file'] {
     display: none;
+  }
+
+  label[for="file-input"] {
+    cursor: pointer;
   }
 
   /* Utility Classes */
@@ -382,16 +365,18 @@
     right: 0;
     top: unset;
     transform: translateY(100%);
-  }
-
-  .sidebar.active {
-    transform: translateY(0);
+    padding-top: calc(3rem + 64px);
   }
 
   .toggle-btn {
-    top: -64px;
+    top: 2rem;
+    left: 2rem;
+    right: unset;
+  }
+
+  .sidebar:not(.active) .toggle-btn {
+    top: calc(-64px - 2rem);
     left: unset;
-    right: 0;
   }
 
   .image-preview {
